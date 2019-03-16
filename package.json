@@ -1,0 +1,14 @@
+{
+  "name": "mocha-unit-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha \"./test/**/*.spec.js\" "
+  },
+  "author": "George Benjamin",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^6.0.2"
+  }
+}
