@@ -13,7 +13,13 @@ function AuthCotroller(){
         }, 5)
     }
 
-    return {isAuthorized, isAuthorizedAsync, setRoles}
+    function isAuthorizedPromise(neededRole){
+        return new Promise(function(resolve){
+            setTimeout(resolve(roles.indexOf(neededRole) >= 0), 50)
+        })
+    }
+
+    return {isAuthorized, isAuthorizedAsync, setRoles,isAuthorizedPromise }
 }
 
 module.exports = AuthCotroller()
