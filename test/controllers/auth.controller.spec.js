@@ -66,12 +66,14 @@ describe('AuthController', () => {
             sinon.stub(user, 'isAuthorized').returns(true)
             let req = {user: user};
             let res = {
-                render: sinon.spy()
+                render: function(){}
             }
 
+            let mock = sinon.mock(res)
+            mock.expects("render").once().withExactArgs("index")
+
             authController.getIndex(req, res)
-            expect(res.render.calledOnce).to.be.true
-            expect(res.render.firstCall.args[0]).to.equal("index")
+            mock.verify()
         })
     })
 })
