@@ -10,12 +10,24 @@ chai.use(chaiAsPromised)
 describe('AuthController', () => {
     beforeEach('Setting up roles', function(){
         console.log("Running Before each")
-        authController.setRoles(['user'])
+        // authController.setRoles(['user'])
     })
     describe('isAuthorized', () => {
+        let user = {}
+        beforeEach(function(){
+            user = {
+                roles: ["user"],
+                isAuthorized: function(neededRole){
+                    return this.roles.indexOf(neededRole) >= 0;
+                }
+            }
+            sinon.spy(user, 'isAuthorized')
+            authController.setUser(user)
+        })
         it('should return false if not authorized', () => {
             let isAuth = authController.isAuthorized("admin");
             expect(isAuth).to.be.false
+            expect(user.isAuthorized.calledOnce).to.be.true
         })
 
         it('should return true if authorized', () => {
@@ -40,9 +52,19 @@ describe('AuthController', () => {
         })
     })
 
-    describe("getIndex", function(){
+    describe.only("getIndex", function(){
+        let user = {}
+        beforeEach(function(){
+            user = {
+                roles: ["user"],
+                isAuthorized: function(neededRole){
+                    return this.roles.indexOf(neededRole) >= 0;
+                }
+            }
+        })
         it("should render the index page", function(){
-            let req = {};
+            sinon.stub(user, 'isAuthorized').returns(true)
+            let req = {user: user};
             let res = {
                 render: sinon.spy()
             }

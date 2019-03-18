@@ -1,10 +1,20 @@
 function AuthCotroller(){
     let roles;
+    let user;
+
+    function setUser(userInfo){
+        user = userInfo
+    }
+
     function setRoles(role){
         roles = role;
+        user.roles = role
     }
+
     function isAuthorized(neededRole){
-        return roles.indexOf(neededRole) >= 0;
+        if(user){
+            return user.isAuthorized(neededRole)
+        }
     }
 
     function isAuthorizedAsync(neededRole, cb){
@@ -20,10 +30,13 @@ function AuthCotroller(){
     }
 
     function getIndex(req, res){
-        res.render("index")
+        if(req.user.isAuthorized("admin")){
+            return res.render("index")
+        }
+        res.render("error")
     }
 
-    return {isAuthorized, isAuthorizedAsync, setRoles,isAuthorizedPromise, getIndex }
+    return {isAuthorized, isAuthorizedAsync, setRoles,isAuthorizedPromise, getIndex, setUser}
 }
 
 module.exports = AuthCotroller()
