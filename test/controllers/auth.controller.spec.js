@@ -4,6 +4,7 @@ const expect = require('chai').expect;
 const should = require('chai').should();
 const chaiAsPromised = require('chai-as-promised')
 const chai = require('chai')
+const sinon = require('sinon')
 chai.use(chaiAsPromised)
 
 describe('AuthController', () => {
@@ -36,6 +37,19 @@ describe('AuthController', () => {
     describe("isAuthorizedPromise", function(){
         it("should return false if not authorized", function(){
            return authController.isAuthorizedPromise("admin").should.eventually.be.false
+        })
+    })
+
+    describe("getIndex", function(){
+        it("should render the index page", function(){
+            let req = {};
+            let res = {
+                render: sinon.spy()
+            }
+
+            authController.getIndex(req, res)
+            expect(res.render.calledOnce).to.be.true
+            expect(res.render.firstCall.args[0]).to.equal("index")
         })
     })
 })
